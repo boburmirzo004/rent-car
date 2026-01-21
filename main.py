@@ -1,16 +1,27 @@
 import datetime
 
 from psycopg2.extras import DictRow
-
 from core.db_settings import execute_query
 import asyncio
-from auth.registration import register, login,active_user
+from auth.registration import register, login, active_user
 from rent.rent import create_an_order, finishing_order, show_all_active_orders, show_all_orders, deactivate_car
 from rent.car import add_new_car, get_all_cars, show_all_cars
 from core.db_settings import execute_query
 from core.config import admin_user_name, admin_password
 from rent.user import show_all_my_orders
 from utils.menus import auth_menu, admin_menu, user_menu
+
+import logging
+
+logging.basicConfig(
+    level="DEBUG",
+    filename="logs.log",
+    filemode="a",
+    format="%(asctime)s | %(levelname)s | %(message)s"
+)
+
+
+logger = logging.getLogger(__name__)
 
 async def auth_menu_func():
     print(auth_menu)
@@ -25,9 +36,9 @@ async def auth_menu_func():
         if not login_success:
             print("Login failed")
             return await auth_menu_func()
-        if login_success=="admin":
+        if login_success == "admin":
             return await show_admin_menu()
-        elif login_success=="user":
+        elif login_success == "user":
             return await show_user_menu()
     elif choice == "3":
         print("Goodbye!")
@@ -37,7 +48,6 @@ async def auth_menu_func():
         return await auth_menu_func()
 
 
-# ---------------- Admin Menu ----------------
 async def show_admin_menu():
     print(admin_menu)
     choice = input("Admin choice: ")
@@ -101,7 +111,6 @@ async def show_admin_menu():
         return await show_admin_menu()
 
 
-# ---------------- User Menu ----------------
 async def show_user_menu():
     print(user_menu)
     choice = input("User choice: ")
@@ -112,7 +121,7 @@ async def show_user_menu():
         return await show_user_menu()
 
     elif choice == "2":
-        success= await show_all_my_orders()
+        success = await show_all_my_orders()
         return await show_user_menu()
 
     elif choice == "3":
@@ -123,7 +132,5 @@ async def show_user_menu():
         return await show_user_menu()
 
 
-# ---------------- Main ----------------
 if __name__ == "__main__":
     asyncio.run(auth_menu_func())
-

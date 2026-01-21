@@ -21,5 +21,4 @@ user_menu = """
 3. Back
 """
 
-
 # 8. Show all users

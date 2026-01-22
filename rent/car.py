@@ -11,12 +11,14 @@ async def add_new_car():
     color: str = input("Color: ")
     price: int = int(input("Price: "))
 
-    query = "INSORT INTO cars(title,color,price) VALUES (%s,%s,%s)"
+    query = "INSERT INTO cars(title,color,price) VALUES (%s,%s,%s)"
     params: tuple[str, str, int] = (title, color, price,)
     if execute_query(query=query, params=params):
-
+        logger.info(msg="Car added.")
         print("Car added")
+        return True
     print("Something went wrong, try again later.")
+    return False
 
 
 async def get_all_cars():

@@ -32,6 +32,7 @@ async def login() -> bool | str:
     password: str = input("Password: ")
 
     if username == admin_user_name and password == admin_password:
+
         return "admin"
 
     query: str = "SELECT id, username, phone FROM users WHERE username=%s AND password=%s"
